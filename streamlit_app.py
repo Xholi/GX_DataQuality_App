@@ -136,7 +136,6 @@ else:
             st.sidebar.error(f"Error: {e}")
             st.stop()
 
-
 if df is not None:
     # Perform validations and calculate stats
     validation_checks = {
@@ -289,8 +288,8 @@ if df is not None:
 
     # Group by and aggregate without summing datetime columns
     grouped = failed_vs_passed.groupby(timeframes[timeframe]).agg({
-    'Total_Failed': 'sum',
-    'Total_Passed': 'sum'
+        'Total_Failed': 'sum',
+        'Total_Passed': 'sum'
     }).reset_index()
 
     fig_time = px.bar(grouped, x=timeframes[timeframe], y=['Total_Failed', 'Total_Passed'], barmode='stack', title=f"Failed vs Passed by {timeframe}")
@@ -306,6 +305,10 @@ if df is not None:
     st.header("Validation Counts by Uploader")
     uploader = st.selectbox('Select Uploader', df['UPDATED_BY'].unique())
     filtered_df = df[df['UPDATED_BY'] == uploader]
+
+    # Ensure Total_Failed column exists in filtered_df
+    if 'Total_Failed' not in filtered_df.columns:
+        filtered_df['Total_Failed'] = 0
 
     valid_count = len(filtered_df) - filtered_df['Total_Failed'].sum()
     invalid_count = filtered_df['Total_Failed'].sum()
