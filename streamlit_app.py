@@ -266,35 +266,39 @@ if df is not None:
     st.write("Invalid Data count : ", len(failed_data_points))
     # New visual: Number of failed vs passed values by day, week, month
     st.header("Failed vs Passed Over Time")
-    df['CREATE_DATE'] = pd.to_datetime(df['CREATE_DATE'], format='%Y-%m-%d %H:%M:%S.%f', errors='coerce')
+    # Convert CREATE_DATE to datetime
+    df['CREATE_DATE'] = pd.to_datetime(df['CREATE_DATE'], errors='coerce')
+    
+    # Extract date components
     df['CREATE_DAY'] = df['CREATE_DATE'].dt.date
-    df['CREATE_WEEK'] = df['CREATE_DATE'].dt.to_period('W')
-    df['CREATE_MONTH'] = df['CREATE_DATE'].dt.to_period('M')
-
+    df['CREATE_WEEK'] = df['CREATE_DATE'].dt.to_period('W').astype(str)
+    df['CREATE_MONTH'] = df['CREATE_DATE'].dt.to_period('M').astype(str)
+    df['CREATE_HOUR'] = df['CREATE_DATE'].dt.strftime('%Y-%m-%d %H:00:00')
+    
     timeframes = {
         'Day': 'CREATE_DAY',
         'Week': 'CREATE_WEEK',
-        'Month': 'CREATE_MONTH'
+        'Month': 'CREATE_MONTH',
+        'Hour': 'CREATE_HOUR'
     }
-
+    
     timeframe = st.selectbox('Select Timeframe', list(timeframes.keys()))
-
+    
     failed_vs_passed = df.copy()
     for check, result in validation_results.items():
         failed_vs_passed[check] = result
-
+    
     failed_vs_passed['Total_Failed'] = failed_vs_passed.apply(lambda row: sum(not row[check] for check in validation_checks.keys()), axis=1)
     failed_vs_passed['Total_Passed'] = len(validation_checks) - failed_vs_passed['Total_Failed']
-
+    
     # Group by and aggregate without summing datetime columns
     grouped = failed_vs_passed.groupby(timeframes[timeframe]).agg({
         'Total_Failed': 'sum',
         'Total_Passed': 'sum'
     }).reset_index()
-
+    
     fig_time = px.bar(grouped, x=timeframes[timeframe], y=['Total_Failed', 'Total_Passed'], barmode='stack', title=f"Failed vs Passed by {timeframe}")
     st.plotly_chart(fig_time)
-
     # Download failed data points as CSV
     st.header("Failed Data Points")
     st.dataframe(failed_data_points)
