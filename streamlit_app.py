@@ -287,10 +287,11 @@ if df is not None:
         df['CREATE_HOUR'] = df[date_column].dt.strftime('%Y-%m-%d %H:00:00')
     
         timeframes = {
+            'Hour': 'CREATE_HOUR',
             'Day': 'CREATE_DAY',
             'Week': 'CREATE_WEEK',
-            'Month': 'CREATE_MONTH',
-            'Hour': 'CREATE_HOUR'
+            'Month': 'CREATE_MONTH'
+            
         }
     
         timeframe = st.selectbox('Select Timeframe', list(timeframes.keys()))
