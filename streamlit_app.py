@@ -68,7 +68,7 @@ def calculate_completeness(data):
 # Function to send email with attachment
 def send_email(to_email, subject, body, attachment_path):
     from_email = "MantshXS@eskom.co.za" # Replace with your email
-    from_password = "fancy=Koala1918" # Replace with your email password
+    from_password = "fancy=Koala" # Replace with your email password
 
     try:
         msg = MIMEMultipart()
