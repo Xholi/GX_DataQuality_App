@@ -308,15 +308,21 @@ if df is not None:
     # Filtered DataFrame by UPDATED_BY and counts
     st.header("Validation Counts by Uploader")
     uploader = st.selectbox('Select Uploader', df['UPDATED_BY'].unique())
+    # Filtered DataFrame for the selected uploader
     filtered_df = df[df['UPDATED_BY'] == uploader]
-
-    # Ensure Total_Failed column exists in filtered_df
+    
+    # Ensure 'Total_Failed' column exists in filtered_df
     if 'Total_Failed' not in filtered_df.columns:
         filtered_df['Total_Failed'] = 0
-
+    
+    # Calculate counts
     valid_count = len(filtered_df) - filtered_df['Total_Failed'].sum()
     invalid_count = filtered_df['Total_Failed'].sum()
-
+    
+    # Display filtered DataFrame
+    st.write(filtered_df)
+    
+    # Display counts of valid and invalid entries
     st.write(f"Valid Items: {valid_count}")
     st.write(f"Invalid Items: {invalid_count}")
 
