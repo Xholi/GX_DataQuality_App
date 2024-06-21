@@ -113,7 +113,7 @@ else:
 st.sidebar.title("Upload Data")
 data_source = st.sidebar.radio("Choose Data Source", ('Upload CSV', 'SQL Database'))
 
-df = None
+df = pd.read_csv("CREATION_RESTRUCTURED_SAMPLE.csv")
 
 if data_source == 'Upload CSV':
     file_upload = st.sidebar.file_uploader("Choose a CSV file", type="csv")
@@ -135,8 +135,6 @@ else:
         except Exception as e:
             st.sidebar.error(f"Error: {e}")
             st.stop()
-else:
-    df = pd.read_csv("CREATION_RESTRUCTURED_SAMPLE.csv")
 if df is not None:
     # Perform validations and calculate stats
     validation_checks = {
