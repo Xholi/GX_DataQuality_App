@@ -113,7 +113,7 @@ else:
 st.sidebar.title("Upload Data")
 data_source = st.sidebar.radio("Choose Data Source", ('Upload CSV', 'SQL Database'))
 
-df = pd.read_csv("CREATION_RESTRUCTURED_SAMPLE.csv")
+df = None
 
 if data_source == 'Upload CSV':
     file_upload = st.sidebar.file_uploader("Choose a CSV file", type="csv")
@@ -121,6 +121,7 @@ if data_source == 'Upload CSV':
         df = pd.read_csv(file_upload)
     else:
         st.sidebar.warning("Please upload a CSV file to proceed.")
+        df = pd.read_csv("CREATION_RESTRUCTURED_SAMPLE.csv")
         st.stop()
 else:
     server = st.sidebar.text_input("SQL Server")
