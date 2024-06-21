@@ -135,7 +135,8 @@ else:
         except Exception as e:
             st.sidebar.error(f"Error: {e}")
             st.stop()
-
+else:
+    df = pd.read_csv("CREATION_RESTRUCTURED_SAMPLE.csv")
 if df is not None:
     # Perform validations and calculate stats
     validation_checks = {
