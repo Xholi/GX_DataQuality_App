@@ -122,7 +122,7 @@ if data_source == 'Upload CSV':
     else:
         st.sidebar.warning("Please upload a CSV file to proceed.")
         df = pd.read_csv("CREATION_RESTRUCTURED_SAMPLE.csv")
-        st.stop()
+        
 else:
     server = st.sidebar.text_input("SQL Server")
     database = st.sidebar.text_input("Database")
